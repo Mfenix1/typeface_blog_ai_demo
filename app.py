@@ -47,15 +47,25 @@ if st.button("Generate Outline + Draft"):
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
-                {"role": "system", "content": "You are an expert marketing copywriter."},
-                {"role": "user", "content": f"Write an outline then a 600‑word blog article about {prompt}. Tone: {tone}."}
+                {
+                    "role": "system",
+                    "content": "You are an expert marketing copywriter."
+                },
+                {
+                    "role": "user",
+                    "content": (
+                        f"Write an outline then a 600‑word blog article about "
+                        f"{prompt}. Tone: {tone}."
+                    )
+                },
             ],
             temperature=creativity,
         )
         draft = response.choices[0].message.content.strip()
-# ------------------------
+        # ------------------------
 
-st.subheader("AI Draft")
+    # Outside the spinner, still inside the button block
+    st.subheader("AI Draft")
     st.write(draft)
     st.markdown("---")
 
@@ -65,5 +75,7 @@ st.subheader("AI Draft")
 
     st.markdown("#### Next‑Step Recommendations")
     if score < 50:
-        st.warning("Consider shortening sentences and using simpler words to improve readability.")
+        st.warning(
+            "Consider shortening sentences and using simpler words to improve readability."
+        )
 
