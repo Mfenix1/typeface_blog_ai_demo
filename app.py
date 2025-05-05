@@ -40,30 +40,30 @@ def readability(text):
 
 if st.button("Generate Outline + Draft"):
     with st.spinner("Calling OpenAI..."):
-       # --- NEW v1 SDK CALL ---
-       from openai import OpenAI
-       client = OpenAI()
+        # --- NEW v1 SDK CALL ---
+        from openai import OpenAI
+        client = OpenAI()
 
-       response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {"role": "system", "content": "You are an expert marketing copywriter."},
-            {"role": "user", "content": f"Write an outline then a 600‑word blog article about {prompt}. Tone: {tone}."}
-    ],
-    temperature=creativity
-)
-draft = response.choices[0].message.content.strip()
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": "You are an expert marketing copywriter."},
+                {"role": "user", "content": f"Write an outline then a 600‑word blog article about {prompt}. Tone: {tone}."}
+            ],
+            temperature=creativity,
+        )
+        draft = response.choices[0].message.content.strip()
 # ------------------------
 
 st.subheader("AI Draft")
-st.write(draft)
-st.markdown("---")
-score = readability(draft)
-st.metric("Flesch Reading Ease", f"{score}/100", delta=None)
-color = "green" if score >= 60 else "orange" if score >= 30 else "red"
-st.progress(score/100)
-st.info(f"Readability Score: **{score}** — {'Easy' if score>=60 else 'Fair' if score>=30 else 'Difficult'}", icon="🚦")
-st.markdown("#### Next Step Recommendations")
-if score < 50:
-    st.warning("Consider shortening sentences and using simpler words to improve readability.")
+    st.write(draft)
+    st.markdown("---")
+
+    score = readability(draft)
+    st.metric("Flesch Reading Ease", f"{score}/100")
+    st.progress(score / 100)
+
+    st.markdown("#### Next‑Step Recommendations")
+    if score < 50:
+        st.warning("Consider shortening sentences and using simpler words to improve readability.")
 
