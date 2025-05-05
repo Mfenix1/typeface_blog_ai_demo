@@ -2,6 +2,15 @@
 import os, openai, textwrap
 import streamlit as st
 
+# Fetch key from Streamlit Cloud secrets or env var
+OPENAI_KEY = st.secrets.get("OPENAI_API_KEY", None) or os.getenv("OPENAI_API_KEY")
+
+if not OPENAI_KEY:
+    st.error("⚠️  OPENAI_API_KEY not found. Set it in Streamlit secrets or as an environment variable.")
+    st.stop()
+
+client = OpenAI(api_key=OPENAI_KEY)
+
 st.set_page_config(page_title="Typeface Blog AI Demo", layout="wide")
 
 st.title("📄 Blog Post Generator + Readability Assistant")
