@@ -40,15 +40,21 @@ def readability(text):
 
 if st.button("Generate Outline + Draft"):
     with st.spinner("Calling OpenAI..."):
-        response = openai.ChatCompletion.create(
-            model="gpt-4o-mini",
-            messages=[
-                {"role": "system", "content": "You are an expert marketing copywriter."},
-                {"role": "user", "content": f"Write an outline then a 600-word blog article about {prompt}. Tone: {tone}. Include a catchy title."}
-            ],
-            temperature=creativity
-        )
-        draft = response.choices[0].message.content.strip()
+       # --- NEW v1 SDK CALL ---
+from openai import OpenAI
+client = OpenAI()
+
+response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "system", "content": "You are an expert marketing copywriter."},
+        {"role": "user", "content": f"Write an outline then a 600‑word blog article about {prompt}. Tone: {tone}."}
+    ],
+    temperature=creativity
+)
+draft = response.choices[0].message.content.strip()
+# ------------------------
+
     st.subheader("AI Draft")
     st.write(draft)
     st.markdown("---")
