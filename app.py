@@ -5,7 +5,7 @@ import streamlit as st
 st.set_page_config(page_title="Typeface Blog AI Demo", layout="wide")
 
 st.title("📄 Blog Post Generator + Readability Assistant")
-openai.api_key = st.secrets.get(${{ secrets.OPENAI_API_KEY }})
+openai.api_key = st.secrets.get("OPENAI_API_KEY", None)
 
 prompt = st.text_input("Blog Topic", "Boba Tea Craze")
 tone = st.selectbox("Tone", ["Friendly", "Professional", "Playful", "Authoritative"], index=0)
